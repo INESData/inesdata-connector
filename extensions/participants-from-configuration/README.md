@@ -16,3 +16,7 @@ edc.catalog.configuration.participant.2.targetUrl = http://localhost:29194/proto
 ```
 
 The `edc.catalog.configuration.participant` will be used by the federated catalog to retrieve the list of participants whose catalog will be obtained for federating it.
+
+## Disclaimer
+
+Este trabajo ha recibido financiación del proyecto INESData (Infraestructura para la INvestigación de ESpacios de DAtos distribuidos en UPM), un proyecto financiado en el contexto de la convocatoria UNICO I+D CLOUD del Ministerio para la Transformación Digital y de la Función Pública en el marco del PRTR financiado por Unión Europea (NextGenerationEU)

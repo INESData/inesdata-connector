@@ -1,6 +1,6 @@
-# Federated Catalog API
+# SQL Count Elements
 
-Provides a management API for getting the federated catalog paginated.
+Provides database queries for entity counts.
 
 ## Disclaimer
 
