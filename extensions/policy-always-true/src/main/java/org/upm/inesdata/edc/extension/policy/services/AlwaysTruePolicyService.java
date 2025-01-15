@@ -14,6 +14,7 @@
 
 package org.upm.inesdata.edc.extension.policy.services;
 
+import org.eclipse.edc.policy.engine.spi.PolicyContext;
 import org.upm.inesdata.edc.extension.policy.AlwaysTruePolicyConstants;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
@@ -41,7 +42,7 @@ public class AlwaysTruePolicyService {
         ruleBindingRegistry.bind("USE", ALL_SCOPES);
         ruleBindingRegistry.bind(AlwaysTruePolicyConstants.EXPRESSION_LEFT_VALUE, ALL_SCOPES);
         policyEngine.registerFunction(
-                ALL_SCOPES,
+                PolicyContext.class,
                 Permission.class,
                 AlwaysTruePolicyConstants.EXPRESSION_LEFT_VALUE,
                 (operator, rightValue, rule, context1) -> operator.equals(Operator.EQ) &&

@@ -26,8 +26,10 @@ import org.eclipse.edc.web.spi.configuration.WebServiceSettings;
 import java.net.URI;
 
 import static java.lang.String.format;
+import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_PREFIX;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 
 /**
@@ -93,6 +95,7 @@ public class SharedApiConfigurationExtension implements ServiceExtension {
         webService.registerResource("shared", authenticationFilter);
 
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA, SHARED_SCOPE);
+        jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE, SHARED_SCOPE);
         var jsonLdMapper = typeManager.getMapper(JSON_LD);
         webService.registerResource("shared", new ObjectMapperProvider(jsonLdMapper));
         webService.registerResource("shared", new JerseyJsonLdInterceptor(jsonLd, jsonLdMapper, SHARED_SCOPE));
