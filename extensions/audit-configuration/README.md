@@ -11,3 +11,7 @@ This extension provides the capability to log audit events for HTTP requests mad
 ## Configuration
 
 To configure the audit logging, you need to ensure that the `HttpRequestInterceptor` is registered with the web service. This is done within the `AuditExtension` class.
+
+## Disclaimer
+
+Este trabajo ha recibido financiación del proyecto INESData (Infraestructura para la INvestigación de ESpacios de DAtos distribuidos en UPM), un proyecto financiado en el contexto de la convocatoria UNICO I+D CLOUD del Ministerio para la Transformación Digital y de la Función Pública en el marco del PRTR financiado por Unión Europea (NextGenerationEU)

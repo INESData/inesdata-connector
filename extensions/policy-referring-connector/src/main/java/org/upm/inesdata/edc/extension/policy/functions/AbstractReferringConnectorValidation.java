@@ -1,8 +1,8 @@
 package org.upm.inesdata.edc.extension.policy.functions;
 
+import org.eclipse.edc.participant.spi.ParticipantAgentPolicyContext;
 import org.eclipse.edc.policy.engine.spi.PolicyContext;
 import org.eclipse.edc.policy.model.Operator;
-import org.eclipse.edc.spi.agent.ParticipantAgent;
 import org.eclipse.edc.spi.monitor.Monitor;
 
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public abstract class AbstractReferringConnectorValidation {
      * @param policyContext context of the policy with claims
      * @return true if claims are from the constrained referring connector
      */
-    protected boolean evaluate(final Operator operator, final Object rightValue, final PolicyContext policyContext) {
+    protected boolean evaluate(final Operator operator, final Object rightValue, final ParticipantAgentPolicyContext policyContext) {
         if (policyContext.hasProblems() && !policyContext.getProblems().isEmpty()) {
             var problems = String.join(", ", policyContext.getProblems());
             var message =
@@ -46,7 +46,7 @@ public abstract class AbstractReferringConnectorValidation {
             return false;
         }
 
-        final var claims = policyContext.getContextData(ParticipantAgent.class).getClaims();
+        final var claims = policyContext.participantAgent().getClaims();
 
         if (!claims.containsKey(REFERRING_CONNECTOR_CLAIM)) {
             return false;

@@ -14,6 +14,7 @@
 
 package org.upm.inesdata.edc.extension.policy;
 
+import org.eclipse.edc.policy.engine.spi.PolicyContext;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
 import org.eclipse.edc.policy.model.Permission;
@@ -46,7 +47,7 @@ public class PolicyEvaluationTimeExtension implements ServiceExtension {
         ruleBindingRegistry.bind("USE", ALL_SCOPES);
         ruleBindingRegistry.bind(KEY_POLICY_EVALUATION_TIME, ALL_SCOPES);
         policyEngine.registerFunction(
-                ALL_SCOPES,
+                PolicyContext.class,
                 Permission.class,
                 KEY_POLICY_EVALUATION_TIME,
                 new PolicyEvaluationTimeFunction(monitor));

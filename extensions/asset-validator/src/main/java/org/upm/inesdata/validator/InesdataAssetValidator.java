@@ -1,6 +1,12 @@
 package org.upm.inesdata.validator;
 
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonValue;
+import org.eclipse.edc.validator.jsonobject.JsonLdPath;
 import org.eclipse.edc.validator.jsonobject.JsonObjectValidator;
 import org.eclipse.edc.validator.jsonobject.validators.MandatoryObject;
 import org.eclipse.edc.validator.jsonobject.validators.MandatoryValue;
@@ -8,9 +14,14 @@ import org.eclipse.edc.validator.jsonobject.validators.OptionalIdNotBlank;
 import org.eclipse.edc.validator.spi.ValidationResult;
 import org.eclipse.edc.validator.spi.Validator;
 import org.eclipse.edc.validator.spi.Violation;
+import org.upm.inesdata.spi.vocabulary.VocabularySharedService;
 
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_DATA_ADDRESS;
@@ -21,6 +32,8 @@ import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 import static org.eclipse.edc.spi.types.domain.DataAddress.EDC_DATA_ADDRESS_TYPE_PROPERTY;
 import static org.eclipse.edc.validator.spi.Violation.violation;
+import static org.upm.inesdata.validator.JsonSchemaValidator.fromJsonSchema;
+import static org.eclipse.edc.validator.jsonobject.JsonLdPath.path;
 
 /**
  * Custom asset validation
@@ -35,27 +48,47 @@ public class InesdataAssetValidator {
     public static final String PROPERTY_KEYWORD = DCAT_SCHEMA + "keyword";
     public static final String PROPERTY_AMAZONS3_REGION = EDC_NAMESPACE + "region";
     public static final String PROPERTY_HTTP_DATA_BASE_URL = EDC_NAMESPACE + "baseUrl";
+    public static final String PROPERTY_ASSET_DATA = EDC_NAMESPACE + "assetData";
 
-    public static Validator<JsonObject> instance() {
-        Validator<JsonObject> originalValidator = JsonObjectValidator.newValidator()
-                .verifyId(OptionalIdNotBlank::new)
-                .verify(EDC_ASSET_PROPERTIES, MandatoryObject::new)
-                .verify(EDC_ASSET_DATA_ADDRESS, MandatoryObject::new)
-                .verifyObject(EDC_ASSET_PROPERTIES, propertiesBuilder ->
+    public static Validator<JsonObject> instance(VocabularySharedService vocabularySharedService, String participantId) {
+
+        return jsonObject -> {
+
+            Set<String> assetDataKeys = getAssetDataKeys(jsonObject);
+            Validator<JsonObject> originalValidator = JsonObjectValidator.newValidator()
+                    .verifyId(OptionalIdNotBlank::new)
+                    .verify(EDC_ASSET_PROPERTIES, MandatoryObject::new)
+                    .verify(EDC_ASSET_DATA_ADDRESS, MandatoryObject::new)
+                    .verifyObject(EDC_ASSET_PROPERTIES, propertiesBuilder -> {
                         propertiesBuilder
                                 .verify(PROPERTY_NAME, MandatoryValue::new)
                                 .verify(PROPERTY_VERSION, MandatoryObject::new)
                                 .verify(PROPERTY_SHORT_DESCRIPTION, MandatoryValue::new)
                                 .verify(PROPERTY_DESCRIPTION, MandatoryValue::new)
                                 .verify(PROPERTY_ASSET_TYPE, MandatoryValue::new)
-                                .verify(PROPERTY_KEYWORD, MandatoryValue::new)
-                )
-                .verifyObject(EDC_ASSET_DATA_ADDRESS, dataAddressBuilder ->
-                        dataAddressBuilder
-                                .verify(EDC_DATA_ADDRESS_TYPE_PROPERTY, path -> new TypeBasedValidator())
-                ).build();
+                                .verify(PROPERTY_KEYWORD, MandatoryValue::new);
 
-        return jsonObject -> {
+                        if (!assetDataKeys.isEmpty()) {
+                            propertiesBuilder.verifyObject(PROPERTY_ASSET_DATA, assetDataBuilder -> {
+                                assetDataKeys.forEach(key -> {
+                                    String jsonSchemaString = vocabularySharedService.getJsonSchemaByConnectorIdAndVocabularyId(participantId, removeNamespace(key)).getContent();
+                                    try (JsonReader reader = Json.createReader(new StringReader(jsonSchemaString))) {
+                                        JsonObject schemaObject = reader.readObject();
+                                        assetDataBuilder.verifyObject(key, builder -> fromJsonSchema(schemaObject, key));
+                                    }
+                                });
+
+                                return assetDataBuilder;
+                            });
+                        }
+
+                        return propertiesBuilder;
+                    })
+                    .verifyObject(EDC_ASSET_DATA_ADDRESS, dataAddressBuilder ->
+                            dataAddressBuilder.verify(EDC_DATA_ADDRESS_TYPE_PROPERTY, path -> new TypeBasedValidator())
+                    )
+                    .build();
+
             ValidationResult result = originalValidator.validate(jsonObject);
 
             if (result.failed()) {
@@ -66,8 +99,45 @@ public class InesdataAssetValidator {
                 );
             }
 
-            return result;
+            return ValidationResult.success();
         };
+    }
+
+    private static Set<String> getAssetDataKeys(JsonObject jsonObject) {
+        Set<String> assetDataKeys = new HashSet<>();
+        if (jsonObject.containsKey(EDC_ASSET_PROPERTIES)) {
+            JsonValue propertiesValue = jsonObject.get(EDC_ASSET_PROPERTIES);
+            if (propertiesValue.getValueType() == JsonValue.ValueType.ARRAY) {
+                JsonArray propertiesArray = (JsonArray) propertiesValue;
+
+                for (JsonObject properties : propertiesArray.getValuesAs(JsonObject.class)) {
+                    if (properties.containsKey(PROPERTY_ASSET_DATA)) {
+                        JsonValue assetDataValue = properties.get(PROPERTY_ASSET_DATA);
+                        if (assetDataValue.getValueType() == JsonValue.ValueType.ARRAY) {
+                            JsonArray assetDataArray = (JsonArray) assetDataValue;
+                            for (JsonObject assetData : assetDataArray.getValuesAs(JsonObject.class)) {
+                                assetDataKeys.addAll(assetData.keySet());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return assetDataKeys;
+    }
+
+    private static String removeNamespace(String key) {
+        int lastIndexOfColon = key.lastIndexOf(":");
+        int lastIndexOfHash = key.lastIndexOf("#");
+        int lastIndexOfSlash = key.lastIndexOf("/");
+
+        int lastIndex = Math.max(lastIndexOfColon, Math.max(lastIndexOfHash, lastIndexOfSlash));
+
+        if (lastIndex != -1) {
+            return key.substring(lastIndex + 1);
+        } else {
+            return key;
+        }
     }
 
     private static Violation updateViolationMessage(Violation violation) {

@@ -1,11 +1,12 @@
 package org.upm.inesdata.edc.extension.policy;
 
+import org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext;
+import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
+import org.eclipse.edc.participant.spi.ParticipantAgentPolicyContext;
+import org.eclipse.edc.policy.engine.spi.AtomicConstraintRuleFunction;
 import org.upm.inesdata.edc.extension.policy.functions.ReferringConnectorDutyFunction;
 import org.upm.inesdata.edc.extension.policy.functions.ReferringConnectorPermissionFunction;
 import org.upm.inesdata.edc.extension.policy.functions.ReferringConnectorProhibitionFunction;
-import org.eclipse.edc.connector.controlplane.contract.spi.offer.ContractDefinitionResolver;
-import org.eclipse.edc.connector.controlplane.contract.spi.validation.ContractValidationService;
-import org.eclipse.edc.policy.engine.spi.AtomicConstraintFunction;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
 import org.eclipse.edc.policy.model.Duty;
@@ -15,8 +16,7 @@ import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-
-import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
+import org.eclipse.edc.policy.engine.spi.PolicyContext;
 
 public class ReferringConnectorValidationExtension implements ServiceExtension {
 
@@ -77,8 +77,8 @@ public class ReferringConnectorValidationExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        ruleBindingRegistry.bind(REFERRING_CONNECTOR_CONSTRAINT_KEY, ContractValidationService.NEGOTIATION_SCOPE);
-        ruleBindingRegistry.bind(REFERRING_CONNECTOR_CONSTRAINT_KEY, ContractDefinitionResolver.CATALOGING_SCOPE);
+        ruleBindingRegistry.bind(REFERRING_CONNECTOR_CONSTRAINT_KEY, ContractNegotiationPolicyContext.NEGOTIATION_SCOPE);
+        ruleBindingRegistry.bind(REFERRING_CONNECTOR_CONSTRAINT_KEY, CatalogPolicyContext.CATALOG_SCOPE);
 
         var monitor = context.getMonitor();
         registerPolicyFunction(Duty.class, new ReferringConnectorDutyFunction(monitor));
@@ -86,7 +86,7 @@ public class ReferringConnectorValidationExtension implements ServiceExtension {
         registerPolicyFunction(Prohibition.class, new ReferringConnectorProhibitionFunction(monitor));
     }
 
-    private <R extends Rule> void registerPolicyFunction(Class<R> type, AtomicConstraintFunction<R> function) {
-        policyEngine.registerFunction(ALL_SCOPES, type, REFERRING_CONNECTOR_CONSTRAINT_KEY, function);
+    private <R extends Rule, C extends PolicyContext> void registerPolicyFunction(Class<R> type, AtomicConstraintRuleFunction<R, C> function) {
+        policyEngine.registerFunction((Class<C>) ParticipantAgentPolicyContext.class, type, REFERRING_CONNECTOR_CONSTRAINT_KEY, function);
     }
 }

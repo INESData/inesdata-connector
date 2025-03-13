@@ -3,8 +3,8 @@ format.version = "1.1"
 
 [versions]
 awaitility = "4.2.2"
-edc = "0.9.1"
-jupiter = "5.11.0"
+edc = "0.10.1"
+jupiter = "5.11.3"
 restAssured = "5.5.0"
 rsApi = "4.0.0"
 
@@ -18,7 +18,7 @@ lombok = "1.18.30"
 parsson = "1.1.6"
 rseeApi = "10.0.0"
 jersey = "3.1.8"
-aws = "2.26.7"
+aws = "2.29.1"
 
 
 [libraries]
@@ -75,14 +75,18 @@ restAssured = { module = "io.rest-assured:rest-assured", version.ref = "restAssu
 azure-storage-blob = { module = "com.azure:azure-storage-blob", version = "12.27.1" }
 minio-io = { module = "io.minio:minio", version = "8.5.12" }
 
+edc-core-token = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
+edc-spi-jwt = { module = "org.eclipse.edc:jwt-spi", version.ref = "edc" }
 edc-auth-spi = { module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
 edc-iam-oauth2-core = { module = "org.eclipse.edc:oauth2-core", version.ref = "edc" }
 edc-iam-oauth2-service = { module = "org.eclipse.edc:oauth2-service", version.ref = "edc"}
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 edc-core-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
+edc-catalog-spi = { module = "org.eclipse.edc:catalog-spi", version.ref = "edc" }
 edc-contract-spi = { module = "org.eclipse.edc:contract-spi", version.ref = "edc" }
 edc-transfer-spi = { module = "org.eclipse.edc:transfer-spi", version.ref = "edc" }
+edc-participant-spi = { module = "org.eclipse.edc:participant-spi", version.ref = "edc" }
 
 # EDC Federated Catalog
 edc-federated-catalog-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref = "edc" }

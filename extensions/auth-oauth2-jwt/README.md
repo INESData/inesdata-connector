@@ -16,3 +16,7 @@ edc.api.auth.oauth2.allowedRoles.2.role=connector-management
 ```
 
 The `edc.api.auth.oauth2.allowedRoles` will be used by the federated catalog to retrieve the list of allowed roles that can perform requests on the managemente API connector.
+
+## Disclaimer
+
+Este trabajo ha recibido financiación del proyecto INESData (Infraestructura para la INvestigación de ESpacios de DAtos distribuidos en UPM), un proyecto financiado en el contexto de la convocatoria UNICO I+D CLOUD del Ministerio para la Transformación Digital y de la Función Pública en el marco del PRTR financiado por Unión Europea (NextGenerationEU)

@@ -42,6 +42,8 @@ dependencies {
     // IAM Identity and authorization
     implementation(libs.edc.iam.oauth2.service)
     implementation(project(":extensions:auth-oauth2-jwt"))
+    implementation(libs.edc.core.token)
+    implementation(libs.edc.spi.jwt)
     // Secretos
     implementation(libs.edc.vault.hashicorp)
     // Federated Catalog
