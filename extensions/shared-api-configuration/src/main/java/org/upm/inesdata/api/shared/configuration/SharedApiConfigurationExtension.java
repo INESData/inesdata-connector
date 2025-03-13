@@ -3,11 +3,12 @@ package org.upm.inesdata.api.shared.configuration;
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.jsonld.spi.JsonLd;
+import org.eclipse.edc.runtime.metamodel.annotation.Configuration;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
-import org.eclipse.edc.runtime.metamodel.annotation.SettingContext;
+import org.eclipse.edc.runtime.metamodel.annotation.Settings;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.system.ExecutorInstrumentation;
@@ -19,9 +20,9 @@ import org.eclipse.edc.web.jersey.providers.jsonld.JerseyJsonLdInterceptor;
 import org.eclipse.edc.web.jersey.providers.jsonld.ObjectMapperProvider;
 import org.eclipse.edc.web.spi.WebServer;
 import org.eclipse.edc.web.spi.WebService;
-import org.eclipse.edc.web.spi.configuration.WebServiceConfiguration;
-import org.eclipse.edc.web.spi.configuration.WebServiceConfigurer;
-import org.eclipse.edc.web.spi.configuration.WebServiceSettings;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
+import org.eclipse.edc.web.spi.configuration.PortMapping;
+import org.eclipse.edc.web.spi.configuration.PortMappingRegistry;
 
 import java.net.URI;
 
@@ -38,34 +39,22 @@ import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 @Provides(SharedApiUrl.class)
 @Extension(value = SharedApiConfigurationExtension.NAME)
 public class SharedApiConfigurationExtension implements ServiceExtension {
-    public static final String NAME = "Shared Public API";
 
+    public static final String NAME = "Shared Public API";
     private static final int DEFAULT_SHARED_PORT = 8186;
     private static final String SHARED_CONTEXT_PATH = "/api/v1/shared";
-
-    @SettingContext("Shared API context setting key")
-    private static final String SHARED_CONFIG_KEY = "web.http.shared";
-
+    private static final String SHARED_API_CONTEXT = "shared";
     @Setting(value = "Base url of the shared API endpoint without the trailing slash. This should correspond to the values configured " +
             "in '" + DEFAULT_SHARED_PORT + "' and '" + SHARED_CONTEXT_PATH + "'.", defaultValue = "http://<HOST>:" + DEFAULT_SHARED_PORT + SHARED_CONTEXT_PATH)
     private static final String SHARED_ENDPOINT = "edc.shared.endpoint";
-
-    private static final WebServiceSettings SHARED_SETTINGS = WebServiceSettings.Builder.newInstance()
-            .apiConfigKey(SHARED_CONFIG_KEY)
-            .contextAlias("shared")
-            .defaultPath(SHARED_CONTEXT_PATH)
-            .defaultPort(DEFAULT_SHARED_PORT)
-            .name(NAME)
-            .build();
-
     private static final String SHARED_SCOPE = "SHARED_API";
+    @Configuration
+    private SharedApiConfiguration apiConfiguration;
 
     @Inject
     private WebServer webServer;
     @Inject
     private ApiAuthenticationRegistry authenticationRegistry;
-    @Inject
-    private WebServiceConfigurer webServiceConfigurer;
     @Inject
     private WebService webService;
     @Inject
@@ -78,6 +67,8 @@ public class SharedApiConfigurationExtension implements ServiceExtension {
     private JsonLd jsonLd;
     @Inject
     private TypeManager typeManager;
+    @Inject
+    private PortMappingRegistry portMappingRegistry;
 
     @Override
     public String name() {
@@ -86,10 +77,10 @@ public class SharedApiConfigurationExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var config = context.getConfig(SHARED_CONFIG_KEY);
-        var configuration = webServiceConfigurer.configure(config, webServer, SHARED_SETTINGS);
+        var portMapping = new PortMapping(SHARED_API_CONTEXT, apiConfiguration.port(), apiConfiguration.path());
+        portMappingRegistry.register(portMapping);
 
-        context.registerService(SharedApiUrl.class, sharedApiUrl(context, configuration));
+        context.registerService(SharedApiUrl.class, sharedApiUrl(context, portMapping));
 
         var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
         webService.registerResource("shared", authenticationFilter);
@@ -101,8 +92,8 @@ public class SharedApiConfigurationExtension implements ServiceExtension {
         webService.registerResource("shared", new JerseyJsonLdInterceptor(jsonLd, jsonLdMapper, SHARED_SCOPE));
     }
 
-    private SharedApiUrl sharedApiUrl(ServiceExtensionContext context, WebServiceConfiguration config) {
-        var callbackAddress = context.getSetting(SHARED_ENDPOINT, format("http://%s:%s%s", hostname.get(), config.getPort(), config.getPath()));
+    private SharedApiUrl sharedApiUrl(ServiceExtensionContext context, PortMapping config) {
+        var callbackAddress = context.getSetting(SHARED_ENDPOINT, format("http://%s:%s%s", hostname.get(), config.port(), config.path()));
         try {
             var url = URI.create(callbackAddress);
             return () -> url;
@@ -110,5 +101,15 @@ public class SharedApiConfigurationExtension implements ServiceExtension {
             context.getMonitor().severe("Error creating shared endpoint url", e);
             throw new EdcException(e);
         }
+    }
+
+    @Settings
+    record SharedApiConfiguration(
+            @Setting(key = "web.http." + SHARED_API_CONTEXT + ".port", description = "Port for " + SHARED_API_CONTEXT + " api context", defaultValue = DEFAULT_SHARED_PORT + "")
+            int port,
+            @Setting(key = "web.http." + SHARED_API_CONTEXT + ".path", description = "Path for " + SHARED_API_CONTEXT + " api context", defaultValue = SHARED_CONTEXT_PATH)
+            String path
+    ) {
+
     }
 }

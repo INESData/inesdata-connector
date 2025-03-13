@@ -82,7 +82,7 @@ dependencies {
     implementation(project(":extensions:inesdata-transfer-process-api"))
 
     //Data plane public api
-    implementation(project(":extensions:extended-data-plane-public-api"))
+    //implementation(project(":extensions:extended-data-plane-public-api"))
 
     //COUNT EDC LIBR
     implementation(libs.edc.spi.core)

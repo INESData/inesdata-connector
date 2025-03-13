@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(libs.edc.sql.core)
+    api(libs.edc.lib.sql)
     implementation(libs.edc.web.spi)
 }
 

@@ -20,7 +20,6 @@ dependencies {
     implementation(libs.edc.transaction.spi)
     implementation(libs.edc.lib.validator)
     implementation(libs.edc.validator.spi)
-    implementation(libs.swagger.annotations.jakarta)
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
     runtimeOnly(libs.edc.spi.jsonld)

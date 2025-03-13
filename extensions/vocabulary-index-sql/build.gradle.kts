@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.edc.transaction.spi)
     implementation(libs.edc.transaction.datasource.spi)
     implementation(libs.edc.sql.core)
+    implementation(libs.edc.lib.sql)
     implementation(libs.edc.lib.util)
 }
 

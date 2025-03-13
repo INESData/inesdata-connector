@@ -3,7 +3,7 @@ format.version = "1.1"
 
 [versions]
 awaitility = "4.2.2"
-edc = "0.10.1"
+edc = "0.11.1"
 jupiter = "5.11.3"
 restAssured = "5.5.0"
 rsApi = "4.0.0"
@@ -47,6 +47,7 @@ edc-data-plane-selector-api = { module = "org.eclipse.edc:data-plane-selector-ap
 edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-core", version.ref = "edc" }
 edc-data-plane-self-registration = { module = "org.eclipse.edc:data-plane-self-registration", version.ref = "edc" }
 edc-data-plane-spi = { module = "org.eclipse.edc:data-plane-spi", version.ref = "edc" }
+edc-data-plane-util = { module = "org.eclipse.edc:data-plane-util", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-edr-cache-api = { module = "org.eclipse.edc:edr-cache-api", version.ref = "edc" }
 edc-edr-store-core = { module = "org.eclipse.edc:edr-store-core", version.ref = "edc" }
@@ -110,7 +111,7 @@ edc-lib-validator = { module = "org.eclipse.edc:validator-lib", version.ref = "e
 edc-validator-spi = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
-edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
+
 #BASE y SQL
 edc-sql-assetindex = { module = "org.eclipse.edc:asset-index-sql", version.ref = "edc" }
 edc-sql-contract-definition = { module = "org.eclipse.edc:contract-definition-store-sql", version.ref = "edc" }
@@ -125,6 +126,8 @@ edc-sql-dataplane = { module = "org.eclipse.edc:data-plane-store-sql", version.r
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-spi-transaction-datasource = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
 edc-spi-transactionspi = { module = "org.eclipse.edc:transaction-spi", version.ref = "edc" }
+edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
+edc-lib-sql = { module = "org.eclipse.edc:sql-lib", version.ref = "edc" }
 
 #POLICIES
 edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.ref = "edc" }
