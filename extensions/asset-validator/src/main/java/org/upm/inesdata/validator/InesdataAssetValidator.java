@@ -47,6 +47,10 @@ public class InesdataAssetValidator {
     public static final String PROPERTY_ASSET_TYPE = EDC_NAMESPACE + "assetType";
     public static final String PROPERTY_KEYWORD = DCAT_SCHEMA + "keyword";
     public static final String PROPERTY_AMAZONS3_REGION = EDC_NAMESPACE + "region";
+    public static final String PROPERTY_AMAZONS3_BUCKET_NAME = EDC_NAMESPACE + "bucketName";
+    public static final String PROPERTY_AMAZONS3_ACCESS_KEY_ID = EDC_NAMESPACE + "accessKeyId";
+    public static final String PROPERTY_AMAZONS3_SECRET_ACCESS_KEY = EDC_NAMESPACE + "secretAccessKey";
+    public static final String PROPERTY_AMAZONS3_ENDPOINT_OVERRIDE = EDC_NAMESPACE + "endpointOverride";
     public static final String PROPERTY_HTTP_DATA_BASE_URL = EDC_NAMESPACE + "baseUrl";
     public static final String PROPERTY_ASSET_DATA = EDC_NAMESPACE + "assetData";
 
@@ -181,6 +185,34 @@ public class InesdataAssetValidator {
                 violations.add(violation(
                         "Field 'https://w3id.org/edc/v0.0.1/ns/region' is required for AmazonS3 DataAddress type",
                         PROPERTY_AMAZONS3_REGION
+                ));
+            }
+
+            if (extractValueFromJsonArray(dataAddress, PROPERTY_AMAZONS3_BUCKET_NAME) == null) {
+                violations.add(violation(
+                        "Field 'https://w3id.org/edc/v0.0.1/ns/bucketName' is required for AmazonS3 DataAddress type",
+                        PROPERTY_AMAZONS3_BUCKET_NAME
+                ));
+            }
+
+            if (extractValueFromJsonArray(dataAddress, PROPERTY_AMAZONS3_ACCESS_KEY_ID) == null) {
+                violations.add(violation(
+                        "Field 'https://w3id.org/edc/v0.0.1/ns/accessKeyId' is required for AmazonS3 DataAddress type",
+                        PROPERTY_AMAZONS3_ACCESS_KEY_ID
+                ));
+            }
+
+            if (extractValueFromJsonArray(dataAddress, PROPERTY_AMAZONS3_SECRET_ACCESS_KEY) == null) {
+                violations.add(violation(
+                        "Field 'https://w3id.org/edc/v0.0.1/ns/secretAccessKey' is required for AmazonS3 DataAddress type",
+                        PROPERTY_AMAZONS3_SECRET_ACCESS_KEY
+                ));
+            }
+
+            if (extractValueFromJsonArray(dataAddress, PROPERTY_AMAZONS3_ENDPOINT_OVERRIDE) == null) {
+                violations.add(violation(
+                        "Field 'https://w3id.org/edc/v0.0.1/ns/endpointOverride' is required for AmazonS3 DataAddress type",
+                        PROPERTY_AMAZONS3_ENDPOINT_OVERRIDE
                 ));
             }
 
