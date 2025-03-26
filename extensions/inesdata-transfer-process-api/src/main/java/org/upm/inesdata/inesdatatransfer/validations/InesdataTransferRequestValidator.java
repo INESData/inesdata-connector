@@ -19,7 +19,6 @@ public class InesdataTransferRequestValidator {
     public static Validator<JsonObject> instance(Monitor monitor) {
         return JsonObjectValidator.newValidator()
                 .verifyId(OptionalIdNotBlank::new)
-                .verify(TRANSFER_REQUEST_ASSET_ID, path -> new LogDeprecatedValue(path, TRANSFER_REQUEST_ASSET_ID, "no attribute, as %s already provide such information".formatted(TRANSFER_REQUEST_CONTRACT_ID), monitor))
                 .verify(TRANSFER_REQUEST_COUNTER_PARTY_ADDRESS, MandatoryValue::new)
                 .verify(TRANSFER_REQUEST_CONTRACT_ID, MandatoryValue::new)
                 .verify(TRANSFER_REQUEST_PROTOCOL, MandatoryValue::new)

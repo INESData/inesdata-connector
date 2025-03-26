@@ -19,7 +19,7 @@ parsson = "1.1.6"
 rseeApi = "10.0.0"
 jersey = "3.1.8"
 aws = "2.30.38"
-
+swagger = "2.2.25"
 
 [libraries]
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
@@ -128,6 +128,7 @@ edc-spi-transactionspi = { module = "org.eclipse.edc:transaction-spi", version.r
 
 #POLICIES
 edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.ref = "edc" }
+edc-policy-spi= { module = "org.eclipse.edc:policy-spi", version.ref = "edc" }
 
 #FEDERATED CATALOG CACHE
 edc-control-plane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
@@ -162,3 +163,4 @@ jetty-server = { module = "org.eclipse.jetty:jetty-server", version = "11.0.24" 
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+swagger = { id = "io.swagger.core.v3.swagger-gradle-plugin", version = "swagger" }

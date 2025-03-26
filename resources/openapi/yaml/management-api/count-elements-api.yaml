@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  description: CountElement the elements of an entity.
+  title: CountElement Elements API
+  version: "1"
+paths:
+  /pagination/count:
+    post:
+      description: CountElement the elements of an entity
+      operationId: countElements
+      parameters:
+      - in: query
+        name: type
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                $ref: "#/components/schemas/JsonValue"
+              properties:
+                empty:
+                  type: boolean
+                valueType:
+                  type: string
+                  enum:
+                  - ARRAY
+                  - OBJECT
+                  - STRING
+                  - NUMBER
+                  - "TRUE"
+                  - "FALSE"
+                  - "NULL"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+          description: The total number of elements
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Request was malformed, e.g. entityType was null"
+        "404":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: The entity type given does not exist
+      tags:
+      - CountElements
+components:
+  schemas:
+    ApiErrorDetail:
+      type: object
+      example:
+        message: error message
+        type: ErrorType
+        path: object.error.path
+        invalidValue: this value is not valid
+      properties:
+        invalidValue:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        type:
+          type: string
+    JsonObject:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/JsonValue"
+      properties:
+        empty:
+          type: boolean
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+    JsonValue:
+      type: object
+      properties:
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"

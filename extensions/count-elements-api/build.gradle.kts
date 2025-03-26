@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     id("com.gmv.inesdata.edc-application")
+    id("com.gmv.inesdata.edc-swagger")
 }
 
 dependencies {
@@ -22,4 +23,10 @@ dependencies {
     implementation(libs.swagger.annotations.jakarta)
     runtimeOnly(libs.edc.spi.jsonld)
     runtimeOnly(libs.edc.json.ld.lib)
+}
+
+edcBuild {
+    swagger {
+        apiGroup.set("management-api")
+    }
 }
