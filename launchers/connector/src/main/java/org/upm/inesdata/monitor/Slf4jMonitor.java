@@ -1,14 +1,28 @@
-package org.upm.inesdata.monitor;
+/*
+ *  Copyright (c) 2024 Your Organization Name
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       GMV
+ *
+ */
 
-import java.util.function.Supplier;
+package org.upm.inesdata.monitor;
 
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.function.Supplier;
+
 public class Slf4jMonitor implements Monitor {
 
-    private static Logger logger = LoggerFactory.getLogger(Slf4jMonitor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Slf4jMonitor.class);
 
     @Override
     public void debug(Supplier<String> supplier, Throwable... errors) {
@@ -18,11 +32,10 @@ public class Slf4jMonitor implements Monitor {
     @Override
     public void debug(String message, Throwable... errors) {
         if (errors.length == 0) {
-            logger.debug(message);
-        }
-        else {
+            LOGGER.debug(message);
+        } else {
             for (Throwable error : errors) {
-                logger.debug(message, error);
+                LOGGER.debug(message, error);
             }
         }
     }
@@ -31,54 +44,47 @@ public class Slf4jMonitor implements Monitor {
     public void info(Supplier<String> supplier, Throwable... errors) {
         info(supplier.get(), errors);
     }
-    
+
     @Override
     public void info(String message, Throwable... errors) {
         if (errors.length == 0) {
-            logger.info(message);
-        }
-        else {
+            LOGGER.info(message);
+        } else {
             for (Throwable error : errors) {
-                logger.info(message, error);
+                LOGGER.info(message, error);
             }
         }
     }
-    
+
     @Override
     public void severe(Supplier<String> supplier, Throwable... errors) {
         severe(supplier.get(), errors);
     }
-    
+
     @Override
     public void severe(String message, Throwable... errors) {
         if (errors.length == 0) {
-            logger.error(message);
-        }
-        else {
+            LOGGER.error(message);
+        } else {
             for (Throwable error : errors) {
-                logger.error(message, error);
+                LOGGER.error(message, error);
             }
         }
     }
-    
+
     @Override
     public void warning(Supplier<String> supplier, Throwable... errors) {
         warning(supplier.get(), errors);
     }
-    
+
     @Override
     public void warning(String message, Throwable... errors) {
         if (errors.length == 0) {
-            logger.warn(message);
-        }
-        else {
+            LOGGER.warn(message);
+        } else {
             for (Throwable error : errors) {
-                logger.warn(message, error);
+                LOGGER.warn(message, error);
             }
         }
     }
-    
-
-    
-    
 }
