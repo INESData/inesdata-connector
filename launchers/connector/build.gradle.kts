@@ -1,7 +1,6 @@
 plugins {
     `java-library`
     id("com.gmv.inesdata.edc-application")
-    id("com.gmv.inesdata.edc-swagger")
     alias(libs.plugins.shadow)
 }
 
