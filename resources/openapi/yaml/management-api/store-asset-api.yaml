@@ -1,0 +1,563 @@
+openapi: 3.0.1
+info:
+  description: Manages the connector S3 assets.
+  title: S3 Asset API
+  version: "1"
+paths:
+  /finalize-upload:
+    post:
+      description: Finalizes the chunked upload and creates the S3 asset using the
+        provided metadata.
+      operationId: finalizeUpload
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - fileName
+              - json
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: Asset created successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Request body was malformed
+        "409":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Asset could not be created due to conflict
+      tags:
+      - S3Asset
+  /s3assets/finalize-upload:
+    post:
+      description: Finalizes the chunked upload and creates the S3 asset using the
+        provided metadata.
+      operationId: finalizeUpload_1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - fileName
+              - json
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: Asset created successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Request body was malformed
+        "409":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Asset could not be created due to conflict
+      tags:
+      - S3Asset
+  /s3assets/upload-chunk:
+    post:
+      description: Uploads a chunk of a file to create a new S3 asset.
+      operationId: uploadChunk_1
+      parameters:
+      - description: "Content-Disposition header, which contains the file name"
+        in: header
+        name: Content-Disposition
+        schema:
+          type: string
+      - description: Index of the current chunk in the upload sequence
+        in: header
+        name: Chunk-Index
+        schema:
+          type: integer
+          format: int32
+      - description: Total number of chunks for this file
+        in: header
+        name: Total-Chunks
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              - json
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: Chunk uploaded successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Request body was malformed
+        "409":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Could not upload chunk, because of conflicts"
+      tags:
+      - S3Asset
+  /upload-chunk:
+    post:
+      description: Uploads a chunk of a file to create a new S3 asset.
+      operationId: uploadChunk
+      parameters:
+      - description: "Content-Disposition header, which contains the file name"
+        in: header
+        name: Content-Disposition
+        schema:
+          type: string
+      - description: Index of the current chunk in the upload sequence
+        in: header
+        name: Chunk-Index
+        schema:
+          type: integer
+          format: int32
+      - description: Total number of chunks for this file
+        in: header
+        name: Total-Chunks
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              - json
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: Chunk uploaded successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Request body was malformed
+        "409":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Could not upload chunk, because of conflicts"
+      tags:
+      - S3Asset
+  /v3/assets:
+    post:
+      description: Creates a new asset together with a data address
+      operationId: createAssetV3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssetInput"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: Asset was created successfully. Returns the asset Id and created
+            timestamp
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Request body was malformed
+        "409":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Could not create asset, because an asset with that ID already\
+            \ exists"
+      tags:
+      - Asset V3
+    put:
+      description: "Updates an asset with the given ID if it exists. If the asset\
+        \ is not found, no further action is taken. DANGER ZONE: Note that updating\
+        \ assets can have unexpected results, especially for contract offers that\
+        \ have been sent out or are ongoing in contract negotiations."
+      operationId: updateAssetV3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssetInput"
+      responses:
+        "204":
+          description: Asset was updated successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          description: "Asset could not be updated, because it does not exist."
+      tags:
+      - Asset V3
+  /v3/assets/request:
+    post:
+      description: Request all assets according to a particular query
+      operationId: requestAssetsV3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuerySpec"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AssetOutput"
+          description: The assets matching the query
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Request body was malformed
+      tags:
+      - Asset V3
+  /v3/assets/{id}:
+    delete:
+      description: "Removes an asset with the given ID if possible. Deleting an asset\
+        \ is only possible if that asset is not yet referenced by a contract agreement,\
+        \ in which case an error is returned. DANGER ZONE: Note that deleting assets\
+        \ can have unexpected results, especially for contract offers that have been\
+        \ sent out or ongoing or contract negotiations."
+      operationId: removeAssetV3
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Asset was deleted successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: An asset with the given ID does not exist
+        "409":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "The asset cannot be deleted, because it is referenced by a\
+            \ contract agreement"
+      tags:
+      - Asset V3
+    get:
+      description: Gets an asset with the given ID
+      operationId: getAssetV3
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetOutput"
+          description: The asset
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: An asset with the given ID does not exist
+      tags:
+      - Asset V3
+components:
+  schemas:
+    ApiErrorDetail:
+      type: object
+      example:
+        message: error message
+        type: ErrorType
+        path: object.error.path
+        invalidValue: this value is not valid
+      properties:
+        invalidValue:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        type:
+          type: string
+    AssetInput:
+      type: object
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@id': asset-id
+        properties:
+          key: value
+        privateProperties:
+          privateKey: privateValue
+        dataAddress:
+          type: HttpData
+          baseUrl: https://jsonplaceholder.typicode.com/todos
+      properties:
+        '@context':
+          type: object
+        '@id':
+          type: string
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/Asset
+        dataAddress:
+          $ref: "#/components/schemas/DataAddress"
+        privateProperties:
+          $ref: "#/components/schemas/Properties"
+        properties:
+          $ref: "#/components/schemas/Properties"
+      required:
+      - '@context'
+      - dataAddress
+      - properties
+    AssetOutput:
+      type: object
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@id': asset-id
+        properties:
+          key: value
+        privateProperties:
+          privateKey: privateValue
+        dataAddress:
+          type: HttpData
+          baseUrl: https://jsonplaceholder.typicode.com/todos
+        createdAt: 1688465655
+      properties:
+        '@id':
+          type: string
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/Asset
+        createdAt:
+          type: integer
+          format: int64
+        dataAddress:
+          $ref: "#/components/schemas/DataAddress"
+        privateProperties:
+          $ref: "#/components/schemas/Properties"
+        properties:
+          $ref: "#/components/schemas/Properties"
+    Criterion:
+      type: object
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@type': Criterion
+        operandLeft: fieldName
+        operator: =
+        operandRight: some value
+      properties:
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/Criterion
+        operandLeft:
+          type: object
+        operandRight:
+          type: object
+        operator:
+          type: string
+      required:
+      - operandLeft
+      - operandRight
+      - operator
+    DataAddress:
+      type: object
+      properties:
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/DataAddress
+        type:
+          type: string
+    IdResponse:
+      type: object
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@id': id-value
+        createdAt: 1688465655
+      properties:
+        '@id':
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+    JsonArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/JsonValue"
+      properties:
+        empty:
+          type: boolean
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+    JsonObject:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/JsonValue"
+      properties:
+        empty:
+          type: boolean
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+    JsonValue:
+      type: object
+      properties:
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+    Properties:
+      type: object
+    QuerySpec:
+      type: object
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@type': QuerySpec
+        offset: 5
+        limit: 10
+        sortOrder: DESC
+        sortField: fieldName
+        filterExpression: []
+      properties:
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/QuerySpec
+        filterExpression:
+          type: array
+          items:
+            $ref: "#/components/schemas/Criterion"
+        limit:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int32
+        sortField:
+          type: string
+        sortOrder:
+          type: string
+          enum:
+          - ASC
+          - DESC

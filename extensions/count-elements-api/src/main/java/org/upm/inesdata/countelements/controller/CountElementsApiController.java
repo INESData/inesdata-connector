@@ -1,7 +1,6 @@
 package org.upm.inesdata.countelements.controller;
 
 import jakarta.json.JsonObject;
-import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -58,8 +57,8 @@ public class CountElementsApiController implements CountElementsApi {
 
         var count = service.countElements(entityType, querySpec);
 
-//        JsonObject result =  transformerRegistry.transform(count, JsonObject.class)
-//                .orElseThrow(f -> new EdcException(f.getFailureDetail()));
+        // JsonObject result =  transformerRegistry.transform(count, JsonObject.class)
+        //         .orElseThrow(f -> new EdcException(f.getFailureDetail()));
 
         return  count.getCount();
     }

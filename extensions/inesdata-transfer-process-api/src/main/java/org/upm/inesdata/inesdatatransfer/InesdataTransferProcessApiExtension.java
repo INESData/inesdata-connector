@@ -68,6 +68,19 @@ public class InesdataTransferProcessApiExtension implements ServiceExtension {
 
         this.validatorRegistry.register("https://w3id.org/edc/v0.0.1/ns/TransferRequest", InesdataTransferRequestValidator.instance(context.getMonitor()));
         this.validatorRegistry.register("https://w3id.org/edc/v0.0.1/ns/TerminateTransfer", TerminateTransferValidator.instance());
-        this.webService.registerResource("management", new InesdataTransferProcessApiController(context.getMonitor(), this.service, managementApiTransformerRegistry, this.validatorRegistry, bucketName, regionName, accessKey, secretKey, endpointOverride));
+        this.webService.registerResource(
+            "management", 
+            new InesdataTransferProcessApiController(
+            context.getMonitor(), 
+            this.service, 
+            managementApiTransformerRegistry, 
+            this.validatorRegistry, 
+            bucketName, 
+            regionName, 
+            accessKey, 
+            secretKey, 
+            endpointOverride
+            )
+        );
     }
 }

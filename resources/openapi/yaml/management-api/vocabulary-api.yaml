@@ -1,0 +1,340 @@
+openapi: 3.0.1
+info:
+  description: Manages the connector vocabularies.
+  title: Vocabulary API
+  version: "1"
+paths:
+  /vocabularies:
+    post:
+      description: Creates a new vocabulary
+      operationId: createVocabulary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VocabularyOutput"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: Vocabulary was created successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: Request body was malformed
+        "409":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Could not create vocabulary, because a vocabulary with that\
+            \ ID already exists"
+      tags:
+      - Vocabulary
+    put:
+      description: "Updates a vocabulary with the given ID if it exists. If the vocabulary\
+        \ is not found, no further action is taken."
+      operationId: updateVocabulary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VocabularyOutput"
+      responses:
+        "204":
+          description: Vocabulary was updated successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          description: "Vocabulary could not be updated, because it does not exist."
+      tags:
+      - Vocabulary
+  /vocabularies/request:
+    post:
+      description: Obtains all vocabularies
+      operationId: getVocabularies
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContractOffer"
+          description: A list of vocabularies
+      tags:
+      - Vocabulary
+  /vocabularies/{id}:
+    delete:
+      description: Removes a vocabulary with the given ID if possible
+      operationId: removeVocabulary
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Vocabulary was deleted successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Vocabulary could not be removed, because it does not exist."
+      tags:
+      - Vocabulary
+    get:
+      description: Gets a vocabulary with the given ID
+      operationId: getVocabulary
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VocabularyOutput"
+          description: The vocabulary
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+          description: A vocabulary with the given ID does not exist
+      tags:
+      - Vocabulary
+components:
+  schemas:
+    Action:
+      type: object
+      properties:
+        constraint:
+          $ref: "#/components/schemas/Constraint"
+        includedIn:
+          type: string
+        type:
+          type: string
+    ApiErrorDetail:
+      type: object
+      example:
+        message: error message
+        type: ErrorType
+        path: object.error.path
+        invalidValue: this value is not valid
+      properties:
+        invalidValue:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        type:
+          type: string
+    Constraint:
+      type: object
+      discriminator:
+        propertyName: edctype
+      properties:
+        edctype:
+          type: string
+      required:
+      - edctype
+    ContractOffer:
+      type: object
+      properties:
+        assetId:
+          type: string
+        id:
+          type: string
+        policy:
+          $ref: "#/components/schemas/Policy"
+    Duty:
+      type: object
+      properties:
+        action:
+          $ref: "#/components/schemas/Action"
+        constraints:
+          type: array
+          items:
+            $ref: "#/components/schemas/Constraint"
+    IdResponse:
+      type: object
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@id': id-value
+        createdAt: 1688465655
+      properties:
+        '@id':
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+    JsonArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/JsonValue"
+      properties:
+        empty:
+          type: boolean
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+    JsonObject:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/JsonValue"
+      properties:
+        empty:
+          type: boolean
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+    JsonValue:
+      type: object
+      properties:
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+    Permission:
+      type: object
+      properties:
+        action:
+          $ref: "#/components/schemas/Action"
+        constraints:
+          type: array
+          items:
+            $ref: "#/components/schemas/Constraint"
+        duties:
+          type: array
+          items:
+            $ref: "#/components/schemas/Duty"
+    Policy:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - SET
+          - OFFER
+          - CONTRACT
+        assignee:
+          type: string
+        assigner:
+          type: string
+        extensibleProperties:
+          type: object
+          additionalProperties:
+            type: object
+        inheritsFrom:
+          type: string
+        obligations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Duty"
+        permissions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Permission"
+        profiles:
+          type: array
+          items:
+            type: string
+        prohibitions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Prohibition"
+        target:
+          type: string
+    Prohibition:
+      type: object
+      properties:
+        action:
+          $ref: "#/components/schemas/Action"
+        constraints:
+          type: array
+          items:
+            $ref: "#/components/schemas/Constraint"
+        remedies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Duty"
+    VocabularyOutput:
+      type: object
+      example: |
+        {
+            "@id": "vocabularyId",
+            "name": "vocabulary name",
+            "connectorId": "connector-c1",
+            "jsonSchema":  "{ \"title\": \"vocabulary\", \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\", \"title\": \"Name\" }, \"dct:keyword\": { \"type\": \"array\", \"title\": \"Keywords\", \"items\": { \"type\": \"string\" } } }, \"required\": [ \"name\" ], \"@context\": { \"dct\": \"http:\/\/purl.org\/dc\/terms\/" } }",
+            "category": "dataset"
+        }
+      properties:
+        '@id':
+          type: string
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/Vocabulary
+        jsonSchema:
+          type: string

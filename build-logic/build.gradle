@@ -18,4 +18,5 @@ dependencies {
     implementation "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:4.4.1.3373"
     implementation "org.owasp:dependency-check-gradle:8.4.2"
     implementation "pl.allegro.tech.build:axion-release-plugin:1.16.1"
+    implementation libs.edc.build.plugin.get()
 }

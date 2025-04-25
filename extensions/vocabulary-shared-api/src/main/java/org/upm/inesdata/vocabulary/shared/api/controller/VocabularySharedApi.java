@@ -13,11 +13,7 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.connector.controlplane.contract.spi.types.offer.ContractOffer;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
-import org.upm.inesdata.vocabulary.controller.VocabularyApi;
 
-import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
-import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
-import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
 
 /**
  * Controller for getting {@link Vocabulary}.
