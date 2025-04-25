@@ -24,6 +24,6 @@ edcBuild {
 }
 
 checkstyle {
-    configFile = rootProject.file("resources/edc-checkstyle-config.xml")
+    configFile = rootProject.file("resources/inesdata-checkstyle-config.xml")
     configDirectory.set(rootProject.file("resources"))
 }

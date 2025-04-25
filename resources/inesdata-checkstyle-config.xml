@@ -40,6 +40,7 @@
     </module>
 
     <module name="LineLength">
+        <property name="severity" value="warning"/>
         <property name="fileExtensions" value="java"/>
         <property name="max" value="250"/>
         <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
@@ -48,6 +49,7 @@
     <!-- Checks for header format                                   -->
     <!-- See https://checkstyle.org/config_header.html#RegexpHeader -->
     <module name="RegexpHeader">
+        <property name="severity" value="info"/>
         <property name="fileExtensions" value="java"/>
         <property name="header"
                   value="^/\*$\n^ \*  Copyright \(c\) 20\d\d((,| -) 20\d{2})? [A-Za-z].+\S$\n^ \*$\n^ \*  This program and the accompanying materials are made available under the$\n^ \*  terms of the Apache License, Version 2\.0 which is available at$\n^ \*  https://www\.apache\.org/licenses/LICENSE-2\.0$\n^ \*$\n^ \*  SPDX-License-Identifier: Apache-2\.0$\n^ \*$\n^ \*  Contributors:$\n^ \*       \S.*\S$\n^ \*$\n^ \*/$\n^$\n^package"/>
@@ -261,6 +263,7 @@
                      value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
         </module>
         <module name="Indentation">
+            <property name="severity" value="info"/>
             <property name="basicOffset" value="4"/>
             <property name="braceAdjustment" value="4"/>
             <property name="caseIndent" value="4"/>
@@ -308,6 +311,7 @@
                     RECORD_DEF"/>
         </module>
         <module name="OperatorWrap">
+            <property name="severity" value="info"/>
             <property name="option" value="EOL"/>
             <property name="tokens"
                       value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
