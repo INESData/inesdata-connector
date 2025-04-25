@@ -26,7 +26,12 @@ public class JsonObjectFromVocabularyTransformer extends AbstractJsonLdTransform
     private final JsonBuilderFactory jsonFactory;
 
     /**
-     * Constructor
+     * A transformer class that converts a {@link Vocabulary} object into a {@link JsonObject}.
+     * This class utilizes a {@link JsonBuilderFactory} for creating JSON objects and an {@link ObjectMapper}
+     * for handling JSON-LD mapping.
+     *
+     * @param jsonFactory The factory used to create JSON objects.
+     * @param jsonLdMapper The mapper used for JSON-LD serialization and deserialization.
      */
     public JsonObjectFromVocabularyTransformer(JsonBuilderFactory jsonFactory, ObjectMapper jsonLdMapper) {
         super(Vocabulary.class, JsonObject.class);

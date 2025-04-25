@@ -63,13 +63,13 @@ public class InesdataTransferProcessApiController implements InesdataTransferPro
 
     DataAddress dataDestination = getDataDestinationProperties();
 
-    var tRequest = TransferRequest.Builder.newInstance().id(transferRequest.getId())
+    var trRequest = TransferRequest.Builder.newInstance().id(transferRequest.getId())
         .transferType(transferRequest.getTransferType()).callbackAddresses(transferRequest.getCallbackAddresses())
         .contractId(transferRequest.getContractId()).counterPartyAddress(transferRequest.getCounterPartyAddress())
         .protocol(transferRequest.getProtocol()).privateProperties(transferRequest.getPrivateProperties())
         .dataDestination(dataDestination).build();
 
-    var createdTransfer = service.initiateTransfer(tRequest)
+    var createdTransfer = service.initiateTransfer(trRequest)
         .onSuccess(d -> monitor.debug(format("Transfer Process created %s", d.getId())))
         .orElseThrow(it -> mapToException(it, TransferProcess.class));
 

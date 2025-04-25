@@ -21,8 +21,11 @@ import static org.eclipse.edc.validator.spi.Violation.violation;
 public class MandatoryJsonField implements Validator<JsonObject> {
     private final JsonLdPath path;
 
+
     /**
-     * Constructor
+     * Constructs a MandatoryJsonField with the specified JSON-LD path.
+     *
+     * @param path the JSON-LD path that represents the mandatory field
      */
     public MandatoryJsonField(JsonLdPath path) {
         this.path = path;
@@ -34,14 +37,14 @@ public class MandatoryJsonField implements Validator<JsonObject> {
                 .filter(it -> !it.isEmpty())
                 .map(it -> it.getJsonObject(0))
                 .map(it -> it.getString(VALUE))
-                .map(this::validateJSON)
+                .map(this::validateJson)
                 .orElseGet(() -> ValidationResult.failure(violation(format("mandatory value '%s'", path), path.toString())));
     }
 
     /**
      * Checks whether a string contains a valid json or not
      */
-    private ValidationResult validateJSON(String value) {
+    private ValidationResult validateJson(String value) {
         try {
             try (JsonReader jsonReader = Json.createReader(new StringReader(value))) {
                 jsonReader.read();

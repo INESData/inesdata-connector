@@ -73,10 +73,10 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public ServiceResult<Vocabulary> update(Vocabulary vocabulary, String participantId) {
         return transactionContext.execute(() -> {
-            Vocabulary vocabularyInDB = index.findByIdAndConnectorId(vocabulary.getId(), vocabulary.getConnectorId());
-            if (vocabularyInDB == null) {
+            Vocabulary vocabularyInDb = index.findByIdAndConnectorId(vocabulary.getId(), vocabulary.getConnectorId());
+            if (vocabularyInDb == null) {
                 throw new ObjectNotFoundException(Vocabulary.class, vocabulary.getId());
-            } else if (!vocabularyInDB.getConnectorId().equals(participantId)) {
+            } else if (!vocabularyInDb.getConnectorId().equals(participantId)) {
                 throw new InvalidRequestException("Is not possible to delete a vocabulary for a different connector");
 
             }
