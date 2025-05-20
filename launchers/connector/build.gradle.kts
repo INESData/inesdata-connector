@@ -10,7 +10,7 @@ dependencies {
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.dsp)
-    implementation(libs.edc.http){
+    implementation(libs.edc.http) {
         exclude("org.eclipse.jetty", "jetty-http")
         exclude("org.eclipse.jetty", "jetty-server")
     }
@@ -18,7 +18,6 @@ dependencies {
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
-    implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.validator.data.address.http.data)
 
     implementation(libs.edc.edr.cache.api)
@@ -32,7 +31,7 @@ dependencies {
     implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
-    implementation(libs.edc.data.plane.http){
+    implementation(libs.edc.data.plane.http) {
         exclude("com.google.protobuf", "protobuf-java")
     }
     implementation(libs.edc.data.plane.iam)

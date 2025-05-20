@@ -79,8 +79,7 @@ public class StorageAssetApiExtension implements ServiceExtension {
         var managementApiTransformerRegistry = transformerRegistry.forContext("management-api");
 
         var factory = Json.createBuilderFactory(Map.of());
-        var jsonLdMapper = typeManager.getMapper(JSON_LD);
-        managementApiTransformerRegistry.register(new JsonObjectFromAssetTransformer(factory, jsonLdMapper));
+        managementApiTransformerRegistry.register(new JsonObjectFromAssetTransformer(factory, typeManager, JSON_LD));
         managementApiTransformerRegistry.register(new JsonObjectToAssetTransformer());
 
         validator.register(EDC_ASSET_TYPE, AssetValidator.instance());

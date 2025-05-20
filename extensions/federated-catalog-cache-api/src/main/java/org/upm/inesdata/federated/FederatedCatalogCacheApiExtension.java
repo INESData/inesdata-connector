@@ -89,7 +89,7 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
 
         var factory = Json.createBuilderFactory(Map.of());
         var jsonLdMapper = typeManager.getMapper(JSON_LD);
-        managementApiTransformerRegistry.register(new JsonObjectFromAssetTransformer(factory, jsonLdMapper));
+        managementApiTransformerRegistry.register(new JsonObjectFromAssetTransformer(factory, typeManager, JSON_LD));
         managementApiTransformerRegistry.register(new JsonObjectToAssetTransformer());
 
         var participantIdMapper = new NoOpParticipantIdMapper();

@@ -87,9 +87,8 @@ public class SharedApiConfigurationExtension implements ServiceExtension {
 
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA, SHARED_SCOPE);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE, SHARED_SCOPE);
-        var jsonLdMapper = typeManager.getMapper(JSON_LD);
-        webService.registerResource("shared", new ObjectMapperProvider(jsonLdMapper));
-        webService.registerResource("shared", new JerseyJsonLdInterceptor(jsonLd, jsonLdMapper, SHARED_SCOPE));
+        webService.registerResource("shared", new ObjectMapperProvider(typeManager , JSON_LD));
+        webService.registerResource("shared", new JerseyJsonLdInterceptor(jsonLd, typeManager, JSON_LD, SHARED_SCOPE));
     }
 
     private SharedApiUrl sharedApiUrl(ServiceExtensionContext context, PortMapping config) {
