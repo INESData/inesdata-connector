@@ -15,9 +15,7 @@ import org.upm.inesdata.vocabulary.service.VocabularyServiceImpl;
 
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Implementation of the {@link VocabularySharedService} interface

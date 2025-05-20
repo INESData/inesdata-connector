@@ -18,13 +18,14 @@ lombok = "1.18.30"
 parsson = "1.1.6"
 rseeApi = "10.0.0"
 jersey = "3.1.8"
-aws = "2.29.1"
-
+aws = "2.30.38"
+swagger = "2.2.25"
 
 [libraries]
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
 edc-api-observability = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }
 edc-auth-tokenbased = { module = "org.eclipse.edc:auth-tokenbased", version.ref = "edc" }
+edc-autodoc-processor = { module = "org.eclipse.edc:autodoc-processor", version.ref = "edc" }
 edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
 edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin", version.ref = "edc" }
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
@@ -131,6 +132,7 @@ edc-lib-sql = { module = "org.eclipse.edc:sql-lib", version.ref = "edc" }
 
 #POLICIES
 edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.ref = "edc" }
+edc-policy-spi= { module = "org.eclipse.edc:policy-spi", version.ref = "edc" }
 
 #FEDERATED CATALOG CACHE
 edc-control-plane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
@@ -165,3 +167,4 @@ jetty-server = { module = "org.eclipse.jetty:jetty-server", version = "11.0.24" 
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+swagger = { id = "io.swagger.core.v3.swagger-gradle-plugin", version = "swagger" }

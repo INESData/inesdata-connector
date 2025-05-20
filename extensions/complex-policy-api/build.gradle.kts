@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     id("com.gmv.inesdata.edc-application")
+    id("com.gmv.inesdata.edc-swagger")
 }
 
 dependencies {
@@ -27,4 +28,10 @@ dependencies {
     runtimeOnly(libs.edc.json.ld.lib)
     testAnnotationProcessor(libs.lombok)
     testCompileOnly(libs.lombok)
+}
+
+edcBuild {
+    swagger {
+        apiGroup.set("management-api")
+    }
 }

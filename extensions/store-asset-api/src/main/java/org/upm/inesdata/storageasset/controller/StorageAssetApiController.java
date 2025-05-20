@@ -3,7 +3,11 @@ package org.upm.inesdata.storageasset.controller;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.api.model.IdResponse;
 import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
@@ -11,7 +15,6 @@ import org.eclipse.edc.connector.controlplane.services.spi.asset.AssetService;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.constants.CoreConstants;
-import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
@@ -19,9 +22,8 @@ import org.eclipse.edc.web.spi.exception.ValidationFailureException;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.upm.inesdata.storageasset.service.S3Service;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMapper;
@@ -69,7 +71,7 @@ public class StorageAssetApiController implements StorageAssetApi {
     Asset asset = transformerRegistry.transform(expand, Asset.class).orElseThrow(InvalidRequestException::new);
 
     String fileName = contentDisposition.split("filename=")[1].replace("\"", "");
-    String folder = String.valueOf(asset.getDataAddress().getProperties().get(CoreConstants.EDC_NAMESPACE+"folder"));
+    String folder = String.valueOf(asset.getDataAddress().getProperties().get(CoreConstants.EDC_NAMESPACE + "folder"));
 
     // Construct the S3 key for the file, keeping the folder structure
     String fullKey;

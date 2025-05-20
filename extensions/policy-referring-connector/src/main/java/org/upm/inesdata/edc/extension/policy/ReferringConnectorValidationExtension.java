@@ -18,6 +18,7 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.policy.engine.spi.PolicyContext;
 
+@SuppressWarnings("unchecked")
 public class ReferringConnectorValidationExtension implements ServiceExtension {
 
     /**

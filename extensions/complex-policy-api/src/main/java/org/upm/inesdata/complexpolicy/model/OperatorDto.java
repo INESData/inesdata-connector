@@ -3,6 +3,12 @@ package org.upm.inesdata.complexpolicy.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
+ * Represents a type-safe ODRL Policy Operator.
+ * <p>
+ * This enum defines various operators that can be used in ODRL policies.
+ * </p>
+ * 
+
  * @author tim.dahlmanns@isst.fraunhofer.de
  */
 @Schema(description = "Type-Safe ODRL Policy Operator", enumAsRef = true)

@@ -14,7 +14,7 @@
 
 package org.upm.inesdata.edc.extension.policy;
 
-import org.eclipse.edc.policy.engine.spi.AtomicConstraintFunction;
+import org.eclipse.edc.policy.engine.spi.AtomicConstraintRuleFunction;
 import org.eclipse.edc.policy.engine.spi.PolicyContext;
 import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
@@ -23,7 +23,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 
-public class PolicyEvaluationTimeFunction implements AtomicConstraintFunction<Permission> {
+public class PolicyEvaluationTimeFunction implements AtomicConstraintRuleFunction<Permission, PolicyContext> {
     private final Monitor monitor;
 
     public PolicyEvaluationTimeFunction(Monitor monitor) {

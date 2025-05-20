@@ -74,6 +74,6 @@ public class ComplexPolicyDefinitionApiExtension implements ServiceExtension {
       PolicyMapper policyMapper = new PolicyMapper(expressionExtractor, expressionMapper, transformerRegistry);
 
       webService.registerResource(ApiContext.MANAGEMENT,
-        new ComplexPolicyDefinitionApiController(transformerRegistry, service, monitor, validatorRegistry,policyMapper));
+        new ComplexPolicyDefinitionApiController(transformerRegistry, service, monitor, validatorRegistry, policyMapper));
   }
 }
