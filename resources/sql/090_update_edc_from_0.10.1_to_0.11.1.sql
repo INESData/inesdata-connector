@@ -1,0 +1,2 @@
+ALTER TABLE edc_data_plane
+ADD COLUMN IF NOT EXISTS runtime_id VARCHAR;

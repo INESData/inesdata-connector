@@ -10,15 +10,18 @@ dependencies {
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.dsp)
-    implementation(libs.edc.http){
+    implementation(libs.edc.http) {
         exclude("org.eclipse.jetty", "jetty-http")
         exclude("org.eclipse.jetty", "jetty-server")
+        exclude("org.eclipse.edc", "jetty-core")
+    }
+    implementation(libs.edc.jetty.core) {
+        exclude("org.eclipse.jetty.websocket", "jetty-websocket-server")
     }
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
-    implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.validator.data.address.http.data)
 
     implementation(libs.edc.edr.cache.api)
@@ -32,7 +35,7 @@ dependencies {
     implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
-    implementation(libs.edc.data.plane.http){
+    implementation(libs.edc.data.plane.http) {
         exclude("com.google.protobuf", "protobuf-java")
     }
     implementation(libs.edc.data.plane.iam)
@@ -82,7 +85,7 @@ dependencies {
     implementation(project(":extensions:inesdata-transfer-process-api"))
 
     //Data plane public api
-    implementation(project(":extensions:extended-data-plane-public-api"))
+    //implementation(project(":extensions:extended-data-plane-public-api"))
 
     //COUNT EDC LIBR
     implementation(libs.edc.spi.core)
@@ -126,6 +129,11 @@ dependencies {
     implementation(libs.google.protobuf)
     implementation(libs.jetty.http)
     implementation(libs.jetty.server)
+    implementation(libs.jetty.websocket.server) {
+        exclude("org.eclipse.jetty", "jetty-annotations")
+    }
+    implementation(libs.jetty.annotations)
+
     constraints {
         implementation(libs.google.protobuf) {
             because("Detected vulnerability on 3.25.3 -- transitive dependency")
@@ -136,6 +144,12 @@ dependencies {
         implementation(libs.jetty.server) {
             because("Detected vulnerability on 11.0.23 -- transitive dependency")
         }
+        implementation(libs.jetty.websocket.server) {
+            because("Detected vulnerability on 11.0.24 -- transitive dependency")
+        }
+        implementation(libs.jetty.annotations) {
+            because("Detected vulnerability on 11.0.23 -- transitive dependency")
+        }
     }
     // Forzar la versión globalmente
     configurations.all {
@@ -143,6 +157,8 @@ dependencies {
             force(libs.google.protobuf)
             force(libs.jetty.http)
             force(libs.jetty.server)
+            force(libs.jetty.websocket.server)
+            force(libs.jetty.annotations)
         }
     }
 }

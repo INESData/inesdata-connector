@@ -3,7 +3,7 @@ format.version = "1.1"
 
 [versions]
 awaitility = "4.2.2"
-edc = "0.10.1"
+edc = "0.12.0"
 jupiter = "5.11.3"
 restAssured = "5.5.0"
 rsApi = "4.0.0"
@@ -20,6 +20,10 @@ rseeApi = "10.0.0"
 jersey = "3.1.8"
 aws = "2.30.38"
 swagger = "2.2.25"
+
+jetty = "11.0.25"
+jetty-websocket = "11.0.25"
+protobuf = "3.25.5"
 
 [libraries]
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
@@ -48,12 +52,14 @@ edc-data-plane-selector-api = { module = "org.eclipse.edc:data-plane-selector-ap
 edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-core", version.ref = "edc" }
 edc-data-plane-self-registration = { module = "org.eclipse.edc:data-plane-self-registration", version.ref = "edc" }
 edc-data-plane-spi = { module = "org.eclipse.edc:data-plane-spi", version.ref = "edc" }
+edc-data-plane-util = { module = "org.eclipse.edc:data-plane-util", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-edr-cache-api = { module = "org.eclipse.edc:edr-cache-api", version.ref = "edc" }
 edc-edr-store-core = { module = "org.eclipse.edc:edr-store-core", version.ref = "edc" }
 edc-edr-store-receiver = { module = "org.eclipse.edc:edr-store-receiver", version.ref = "edc" }
 edc-http = { module = "org.eclipse.edc:http", version.ref = "edc" }
 edc-iam-mock = { module = "org.eclipse.edc:iam-mock", version.ref = "edc" }
+edc-jetty-core = { module = "org.eclipse.edc:jetty-core", version.ref = "edc" }
 edc-json-ld-lib = { module = "org.eclipse.edc:json-ld-lib", version.ref = "edc" }
 edc-json-ld-spi = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
@@ -61,8 +67,6 @@ edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = 
 edc-management-api-test-fixtures = { module = "org.eclipse.edc:management-api-test-fixtures", version.ref = "edc" }
 edc-monitor-jdk-logger = { module = "org.eclipse.edc:monitor-jdk-logger", version.ref = "edc" }
 edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
-edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
-edc-transfer-pull-http-dynamic-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
 edc-vault-hashicorp = { module = "org.eclipse.edc:vault-hashicorp", version.ref = "edc" }
 edc-validator-data-address-http-data = { module = "org.eclipse.edc:validator-data-address-http-data", version.ref = "edc" }
 jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
@@ -75,12 +79,14 @@ postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 restAssured = { module = "io.rest-assured:rest-assured", version.ref = "restAssured" }
 azure-storage-blob = { module = "com.azure:azure-storage-blob", version = "12.27.1" }
 minio-io = { module = "io.minio:minio", version = "8.5.12" }
+edc-api-lib = { module = "org.eclipse.edc:api-lib", version.ref = "edc" }
+edc-sql-lib = { module = "org.eclipse.edc:sql-lib", version.ref = "edc" }
 
 edc-core-token = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
 edc-spi-jwt = { module = "org.eclipse.edc:jwt-spi", version.ref = "edc" }
 edc-auth-spi = { module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
 edc-iam-oauth2-core = { module = "org.eclipse.edc:oauth2-core", version.ref = "edc" }
-edc-iam-oauth2-service = { module = "org.eclipse.edc:oauth2-service", version.ref = "edc"}
+edc-iam-oauth2-service = { module = "org.eclipse.edc:oauth2-service", version.ref = "edc" }
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 edc-core-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
@@ -111,7 +117,7 @@ edc-lib-validator = { module = "org.eclipse.edc:validator-lib", version.ref = "e
 edc-validator-spi = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
-edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
+
 #BASE y SQL
 edc-sql-assetindex = { module = "org.eclipse.edc:asset-index-sql", version.ref = "edc" }
 edc-sql-contract-definition = { module = "org.eclipse.edc:contract-definition-store-sql", version.ref = "edc" }
@@ -126,6 +132,8 @@ edc-sql-dataplane = { module = "org.eclipse.edc:data-plane-store-sql", version.r
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-spi-transaction-datasource = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
 edc-spi-transactionspi = { module = "org.eclipse.edc:transaction-spi", version.ref = "edc" }
+edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
+edc-lib-sql = { module = "org.eclipse.edc:sql-lib", version.ref = "edc" }
 
 #POLICIES
 edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.ref = "edc" }
@@ -157,9 +165,11 @@ edc-transfer-process-api = { module = "org.eclipse.edc:transfer-process-api", ve
 edc-api-management-lib = { module = "org.eclipse.edc:management-api-lib", version.ref = "edc" }
 
 #VULNERABILITY
-google-protobuf = { module = "com.google.protobuf:protobuf-java", version = "3.25.5" }
-jetty-http = { module = "org.eclipse.jetty:jetty-http", version = "11.0.24" }
-jetty-server = { module = "org.eclipse.jetty:jetty-server", version = "11.0.24" }
+google-protobuf = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
+jetty-http = { module = "org.eclipse.jetty:jetty-http", version.ref = "jetty" }
+jetty-server = { module = "org.eclipse.jetty:jetty-server", version.ref = "jetty" }
+jetty-annotations = { module = "org.eclipse.jetty:jetty-annotations", version.ref = "jetty" }
+jetty-websocket-server = { module = "org.eclipse.jetty.websocket:websocket-jakarta-server", version.ref = "jetty-websocket" }
 
 
 [plugins]

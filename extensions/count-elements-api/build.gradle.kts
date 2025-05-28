@@ -12,6 +12,7 @@ dependencies {
 
     implementation(libs.edc.connector.core)
     implementation(libs.edc.api.core)
+    implementation(libs.edc.api.lib)
     implementation(libs.edc.lib.util)
     implementation(libs.edc.lib.transform)
     implementation(libs.edc.dsp.api.configuration)
