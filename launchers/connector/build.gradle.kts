@@ -16,7 +16,7 @@ dependencies {
         exclude("org.eclipse.edc", "jetty-core")
     }
     implementation(libs.edc.jetty.core) {
-        exclude("org.eclipse.jetty.websocket", "jetty-websocket")
+        exclude("org.eclipse.jetty.websocket", "jetty-websocket-server")
     }
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
@@ -129,7 +129,11 @@ dependencies {
     implementation(libs.google.protobuf)
     implementation(libs.jetty.http)
     implementation(libs.jetty.server)
-    implementation(libs.jetty.websocket)
+    implementation(libs.jetty.websocket.server) {
+        exclude("org.eclipse.jetty", "jetty-annotations")
+    }
+    implementation(libs.jetty.annotations)
+
     constraints {
         implementation(libs.google.protobuf) {
             because("Detected vulnerability on 3.25.3 -- transitive dependency")
@@ -140,8 +144,11 @@ dependencies {
         implementation(libs.jetty.server) {
             because("Detected vulnerability on 11.0.23 -- transitive dependency")
         }
-        implementation(libs.jetty.websocket) {
+        implementation(libs.jetty.websocket.server) {
             because("Detected vulnerability on 11.0.24 -- transitive dependency")
+        }
+        implementation(libs.jetty.annotations) {
+            because("Detected vulnerability on 11.0.23 -- transitive dependency")
         }
     }
     // Forzar la versión globalmente
@@ -150,7 +157,8 @@ dependencies {
             force(libs.google.protobuf)
             force(libs.jetty.http)
             force(libs.jetty.server)
-            force(libs.jetty.websocket)
+            force(libs.jetty.websocket.server)
+            force(libs.jetty.annotations)
         }
     }
 }

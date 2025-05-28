@@ -21,6 +21,10 @@ jersey = "3.1.8"
 aws = "2.30.38"
 swagger = "2.2.25"
 
+jetty = "11.0.25"
+jetty-websocket = "11.0.25"
+protobuf = "3.25.5"
+
 [libraries]
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
 edc-api-observability = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }
@@ -161,10 +165,11 @@ edc-transfer-process-api = { module = "org.eclipse.edc:transfer-process-api", ve
 edc-api-management-lib = { module = "org.eclipse.edc:management-api-lib", version.ref = "edc" }
 
 #VULNERABILITY
-google-protobuf = { module = "com.google.protobuf:protobuf-java", version = "3.25.5" }
-jetty-http = { module = "org.eclipse.jetty:jetty-http", version = "12.0.21" }
-jetty-server = { module = "org.eclipse.jetty:jetty-server", version = "12.0.21" }
-jetty-websocket = { module = "org.eclipse.jetty.websocket:websocket-jakarta-server", version = "11.0.25" }
+google-protobuf = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
+jetty-http = { module = "org.eclipse.jetty:jetty-http", version.ref = "jetty" }
+jetty-server = { module = "org.eclipse.jetty:jetty-server", version.ref = "jetty" }
+jetty-annotations = { module = "org.eclipse.jetty:jetty-annotations", version.ref = "jetty" }
+jetty-websocket-server = { module = "org.eclipse.jetty.websocket:websocket-jakarta-server", version.ref = "jetty-websocket" }
 
 
 [plugins]
