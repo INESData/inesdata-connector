@@ -55,6 +55,7 @@ edc-edr-store-core = { module = "org.eclipse.edc:edr-store-core", version.ref = 
 edc-edr-store-receiver = { module = "org.eclipse.edc:edr-store-receiver", version.ref = "edc" }
 edc-http = { module = "org.eclipse.edc:http", version.ref = "edc" }
 edc-iam-mock = { module = "org.eclipse.edc:iam-mock", version.ref = "edc" }
+edc-jetty-core = { module = "org.eclipse.edc:jetty-core", version.ref = "edc" }
 edc-json-ld-lib = { module = "org.eclipse.edc:json-ld-lib", version.ref = "edc" }
 edc-json-ld-spi = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
@@ -163,6 +164,7 @@ edc-api-management-lib = { module = "org.eclipse.edc:management-api-lib", versio
 google-protobuf = { module = "com.google.protobuf:protobuf-java", version = "3.25.5" }
 jetty-http = { module = "org.eclipse.jetty:jetty-http", version = "12.0.21" }
 jetty-server = { module = "org.eclipse.jetty:jetty-server", version = "12.0.21" }
+jetty-websocket = { module = "org.eclipse.jetty.websocket:websocket-jakarta-server", version = "11.0.25" }
 
 
 [plugins]

@@ -13,6 +13,10 @@ dependencies {
     implementation(libs.edc.http) {
         exclude("org.eclipse.jetty", "jetty-http")
         exclude("org.eclipse.jetty", "jetty-server")
+        exclude("org.eclipse.edc", "jetty-core")
+    }
+    implementation(libs.edc.jetty.core) {
+        exclude("org.eclipse.jetty.websocket", "jetty-websocket")
     }
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
@@ -125,6 +129,7 @@ dependencies {
     implementation(libs.google.protobuf)
     implementation(libs.jetty.http)
     implementation(libs.jetty.server)
+    implementation(libs.jetty.websocket)
     constraints {
         implementation(libs.google.protobuf) {
             because("Detected vulnerability on 3.25.3 -- transitive dependency")
@@ -135,6 +140,9 @@ dependencies {
         implementation(libs.jetty.server) {
             because("Detected vulnerability on 11.0.23 -- transitive dependency")
         }
+        implementation(libs.jetty.websocket) {
+            because("Detected vulnerability on 11.0.24 -- transitive dependency")
+        }
     }
     // Forzar la versión globalmente
     configurations.all {
@@ -142,6 +150,7 @@ dependencies {
             force(libs.google.protobuf)
             force(libs.jetty.http)
             force(libs.jetty.server)
+            force(libs.jetty.websocket)
         }
     }
 }
