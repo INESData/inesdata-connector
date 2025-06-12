@@ -61,10 +61,9 @@ public class ComplexPolicyDefinitionApiExtension implements ServiceExtension {
   public void initialize(ServiceExtensionContext context) {
     var jsonBuilderFactory = Json.createBuilderFactory(Map.of());
     var managementApiTransformerRegistry = transformerRegistry.forContext("management-api");
-    var mapper = typeManager.getMapper(JSON_LD);
     managementApiTransformerRegistry.register(new JsonObjectToPolicyDefinitionTransformer());
     managementApiTransformerRegistry.register(
-        new JsonObjectFromPolicyDefinitionTransformer(jsonBuilderFactory, mapper));
+            new JsonObjectFromPolicyDefinitionTransformer(jsonBuilderFactory, typeManager, JSON_LD));
 
     validatorRegistry.register(EDC_POLICY_DEFINITION_TYPE, PolicyDefinitionValidator.instance());
 
@@ -75,6 +74,6 @@ public class ComplexPolicyDefinitionApiExtension implements ServiceExtension {
       PolicyMapper policyMapper = new PolicyMapper(expressionExtractor, expressionMapper, transformerRegistry);
 
       webService.registerResource(ApiContext.MANAGEMENT,
-        new ComplexPolicyDefinitionApiController(transformerRegistry, service, monitor, validatorRegistry,policyMapper));
+        new ComplexPolicyDefinitionApiController(transformerRegistry, service, monitor, validatorRegistry, policyMapper));
   }
 }

@@ -7,7 +7,6 @@ public class ConnectorMonitorExtension implements MonitorExtension {
 
     @Override
     public Monitor getMonitor() {
-        
         return new Slf4jMonitor();
     }
 }

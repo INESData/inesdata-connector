@@ -28,7 +28,6 @@ public class ParticipantRegistrationService {
 
     public static final List<String> SUPPORTED_PROTOCOLS = List.of("dataspace-protocol-http");
 
-    @Setting
     public static final String EDC_CATALOG_REGISTRATION_SERVICE_HOST = "edc.catalog.registration.service.host";
     public static final String RESOURCE_URL = "/public/participants";
 

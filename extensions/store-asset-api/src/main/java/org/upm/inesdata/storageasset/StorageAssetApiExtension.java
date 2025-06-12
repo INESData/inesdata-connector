@@ -27,10 +27,12 @@ import java.util.Map;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 import static org.eclipse.edc.spi.types.domain.DataAddress.EDC_DATA_ADDRESS_TYPE;
+
 /**
  * Extension that provides an API for managing vocabularies
  */
 @Extension(value = StorageAssetApiExtension.NAME)
+
 public class StorageAssetApiExtension implements ServiceExtension {
 
     public static final String NAME = "StorageAsset API Extension";
@@ -79,8 +81,7 @@ public class StorageAssetApiExtension implements ServiceExtension {
         var managementApiTransformerRegistry = transformerRegistry.forContext("management-api");
 
         var factory = Json.createBuilderFactory(Map.of());
-        var jsonLdMapper = typeManager.getMapper(JSON_LD);
-        managementApiTransformerRegistry.register(new JsonObjectFromAssetTransformer(factory, jsonLdMapper));
+        managementApiTransformerRegistry.register(new JsonObjectFromAssetTransformer(factory, typeManager, JSON_LD));
         managementApiTransformerRegistry.register(new JsonObjectToAssetTransformer());
 
         validator.register(EDC_ASSET_TYPE, AssetValidator.instance());
@@ -97,8 +98,8 @@ public class StorageAssetApiExtension implements ServiceExtension {
 
         S3Service s3Service = new S3Service(accessKey, secretKey, endpointOverride, region, bucketName, monitor);
 
-        var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry,
-            validator,s3Service,
+        var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry, 
+            validator, s3Service,
             jsonLd, bucketName, regionName);
         webService.registerResource(ApiContext.MANAGEMENT, storageAssetApiController);
     }

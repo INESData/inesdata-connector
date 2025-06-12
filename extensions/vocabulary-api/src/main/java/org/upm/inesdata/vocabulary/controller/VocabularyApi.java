@@ -63,7 +63,7 @@ public interface VocabularyApi {
     /**
      * Creates a new vocabulary
      *
-     * @param vocabulary the vocabulary
+     * @param vocabylary the vocabulary
      * @return JsonObject with the created vocabulary
      */
     @Operation(description = "Creates a new vocabulary",
@@ -82,7 +82,7 @@ public interface VocabularyApi {
      * Updates a vocabulary
      *
      * @param vocabulary the vocabulary to be updated
-     * @return JsonObject with the updated vocabulary
+     * 
      */
     @Operation(description = "Updates a vocabulary with the given ID if it exists. If the vocabulary is not found, no further action is taken.",
             requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = VocabularyOutputSchema.class))),
@@ -98,7 +98,7 @@ public interface VocabularyApi {
      * Removes the {@link Vocabulary} with the given ID 
      *
      * @param id id of the vocabulary
-     * @return JsonObject with the updated vocabulary
+     * 
      */
     @Operation(description = "Removes a vocabulary with the given ID if possible",
             responses = {
@@ -127,7 +127,28 @@ public interface VocabularyApi {
                     "@id": "vocabularyId",
                     "name": "vocabulary name",
                     "connectorId": "connector-c1",
-                    "jsonSchema":  "{ \\"title\\": \\"vocabulary\\", \\"type\\": \\"object\\", \\"properties\\": { \\"name\\": { \\"type\\": \\"string\\", \\"title\\": \\"Name\\" }, \\"dct:keyword\\": { \\"type\\": \\"array\\", \\"title\\": \\"Keywords\\", \\"items\\": { \\"type\\": \\"string\\" } } }, \\"required\\": [ \\"name\\" ], \\"@context\\": { \\"dct\\": \\"http:\\/\\/purl.org\\/dc\\/terms\\/\" } }",
+                    "jsonSchema":  "{ 
+                        \\"title\\": \\"vocabulary\\", 
+                        \\"type\\": \\"object\\", 
+                        \\"properties\\": { 
+                            \\"name\\": { 
+                                \\"type\\": \\"string\\", 
+                                \\"title\\": 
+                                \\"Name\\" 
+                            },
+                            \\"dct:keyword\\": { 
+                                 \\"type\\": \\"array\\", 
+                                 \\"title\\": \\"Keywords\\", 
+                                 \\"items\\": { 
+                                    \\"type\\": \\"string\\" 
+                                } 
+                            } 
+                        }, 
+                        \\"required\\": [ \\"name\\" ], 
+                        \\"@context\\": { 
+                            \\"dct\\": \\"http:\\/\\/purl.org\\/dc\\/terms\\/\" 
+                        } 
+                    }",
                     "category": "dataset"
                 }
                 """;

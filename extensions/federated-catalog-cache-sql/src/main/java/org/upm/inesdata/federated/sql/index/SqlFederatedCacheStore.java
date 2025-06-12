@@ -40,6 +40,7 @@ import java.util.stream.Stream;
  * catalog data. This class extends {@link AbstractSqlStore} and provides methods for saving, querying, and managing
  * catalogs in a federated cache.
  */
+@SuppressWarnings("unchecked")
 public class SqlFederatedCacheStore extends AbstractSqlStore implements PaginatedFederatedCacheStoreIndex {
 
   public static final String INTERNAL_CATALOG_ID = "internal_catalog_id";
@@ -222,7 +223,7 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
 
   private Dataset mapResultSetToDataset(ResultSet resultSet, boolean withCatalogId) throws SQLException {
     String id = resultSet.getString("id");
-    Map<String, Object> properties = fromJson(resultSet.getString("properties"), Map.class);
+    Map<String, Object> properties = fromJson(resultSet.getString("properties"), new TypeReference<Map<String, Object>>() {});
     Map<String, Policy> offers = fromJson(resultSet.getString("offers"), new TypeReference<Map<String, Policy>>() {
     });
 
@@ -232,7 +233,7 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
       properties.put(INTERNAL_CATALOG_ID, resultSet.getString("catalog_id"));
     }
     Dataset.Builder datasetBuilder = Dataset.Builder.newInstance().id(id).properties(properties)
-        .distributions(distributions);
+            .distributions(distributions);
 
     if (offers != null) {
       offers.forEach((key, value) -> datasetBuilder.offer(key, value));

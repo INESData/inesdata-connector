@@ -61,7 +61,7 @@ public class VocabularyApiController implements VocabularyApi {
         var vocabulary = transformerRegistry.transform(vocabularyJson, Vocabulary.class)
                 .orElseThrow(InvalidRequestException::new);
 
-        if (!participantId.equals(vocabulary.getConnectorId())){
+        if (!participantId.equals(vocabulary.getConnectorId())) {
             throw new InvalidRequestException("Is not possible to create a vocabulary for a different connector");
         }
 

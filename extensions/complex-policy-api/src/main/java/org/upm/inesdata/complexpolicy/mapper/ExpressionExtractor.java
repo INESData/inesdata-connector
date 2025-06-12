@@ -55,9 +55,9 @@ public class ExpressionExtractor {
         }
 
         List<UiPolicyExpression> expressions = new ArrayList<>();
-        for (int iPermission = 0; iPermission < permissions.size(); iPermission++) {
-            var permissionErrors = errors.forChildObject("permissions").forChildArrayElement(iPermission);
-            var permission = permissions.get(iPermission);
+        for (int itPermission = 0; itPermission < permissions.size(); itPermission++) {
+            var permissionErrors = errors.forChildObject("permissions").forChildArrayElement(itPermission);
+            var permission = permissions.get(itPermission);
             expressions.addAll(getPermissionExpressions(permission, permissionErrors));
         }
         return expressions;

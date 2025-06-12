@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     id("com.gmv.inesdata.edc-application")
+    id("com.gmv.inesdata.edc-swagger")
 }
 
 dependencies {
@@ -12,6 +13,7 @@ dependencies {
 
     implementation(libs.edc.connector.core)
     implementation(libs.edc.api.core)
+    implementation(libs.edc.api.lib)
     implementation(libs.edc.lib.util)
     implementation(libs.edc.lib.transform)
     implementation(libs.edc.dsp.api.configuration)
@@ -20,11 +22,16 @@ dependencies {
     implementation(libs.edc.transaction.spi)
     implementation(libs.edc.lib.validator)
     implementation(libs.edc.validator.spi)
-    implementation(libs.swagger.annotations.jakarta)
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
     runtimeOnly(libs.edc.spi.jsonld)
     runtimeOnly(libs.edc.json.ld.lib)
     testAnnotationProcessor(libs.lombok)
     testCompileOnly(libs.lombok)
+}
+
+edcBuild {
+    swagger {
+        apiGroup.set("management-api")
+    }
 }

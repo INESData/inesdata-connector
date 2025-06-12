@@ -13,15 +13,11 @@ import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
 import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
-import org.upm.inesdata.spi.vocabulary.VocabularyService;
 import org.upm.inesdata.spi.vocabulary.VocabularySharedService;
-import org.upm.inesdata.vocabulary.service.VocabularyServiceImpl;
-import org.upm.inesdata.vocabulary.shared.api.controller.VocabularySharedApi;
 import org.upm.inesdata.vocabulary.shared.api.controller.VocabularySharedApiController;
 import org.upm.inesdata.vocabulary.shared.api.service.VocabularySharedServiceImpl;
 import org.upm.inesdata.vocabulary.shared.api.transformer.JsonObjectToConnectorVocabularyTransformer;
 import org.upm.inesdata.vocabulary.transformer.JsonObjectFromVocabularyTransformer;
-import org.upm.inesdata.vocabulary.transformer.JsonObjectToVocabularyTransformer;
 
 import java.util.Map;
 

@@ -5,20 +5,24 @@ plugins {
 }
 
 dependencies {
+    // Core extensions
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.dsp)
-    implementation(libs.edc.http){
+    implementation(libs.edc.http) {
         exclude("org.eclipse.jetty", "jetty-http")
         exclude("org.eclipse.jetty", "jetty-server")
+        exclude("org.eclipse.edc", "jetty-core")
+    }
+    implementation(libs.edc.jetty.core) {
+        exclude("org.eclipse.jetty.websocket", "jetty-websocket-server")
     }
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
-    implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.validator.data.address.http.data)
 
     implementation(libs.edc.edr.cache.api)
@@ -32,20 +36,23 @@ dependencies {
     implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
-    implementation(libs.edc.data.plane.http){
+    implementation(libs.edc.data.plane.http) {
         exclude("com.google.protobuf", "protobuf-java")
     }
     implementation(libs.edc.data.plane.iam)
-    //NUESTRO
+    
     // Audit
     implementation(project(":extensions:audit-configuration"))
+
     // IAM Identity and authorization
     implementation(libs.edc.iam.oauth2.service)
     implementation(project(":extensions:auth-oauth2-jwt"))
     implementation(libs.edc.core.token)
     implementation(libs.edc.spi.jwt)
-    // Secretos
+
+    // Secrets
     implementation(libs.edc.vault.hashicorp)
+
     // Federated Catalog
     implementation(libs.edc.federated.catalog.spi)
     implementation(libs.edc.federated.catalog.core)
@@ -57,11 +64,10 @@ dependencies {
     implementation(project(":extensions:count-elements-sql"))
     implementation(project(":extensions:count-elements-api"))
 
-    //participants
+    // Participants
     implementation(project(":extensions:participants-from-registration-service"))
 
-
-    //Vocabulary
+    // Vocabulary
     implementation(project(":extensions:vocabulary-index-sql"))
     implementation(project(":extensions:vocabulary-api"))
     implementation(project(":extensions:vocabulary-shared-api"))
@@ -78,13 +84,10 @@ dependencies {
     // Shared API
     implementation(project(":extensions:shared-api-configuration"))
 
-    //Transfer
+    // Transfer
     implementation(project(":extensions:inesdata-transfer-process-api"))
 
-    //Data plane public api
-    implementation(project(":extensions:extended-data-plane-public-api"))
-
-    //COUNT EDC LIBR
+    // Persistence base
     implementation(libs.edc.spi.core)
     implementation(libs.edc.spi.transform)
     implementation(libs.edc.web.spi)
@@ -101,7 +104,7 @@ dependencies {
     implementation(libs.edc.transaction.datasource.spi)
     implementation(libs.edc.sql.core)
 
-    //COUNT AÑADIENDO TRACTUS
+    // Persistence
     implementation(libs.edc.sql.contract.definition)
     implementation(libs.edc.sql.assetindex)
     implementation(libs.edc.sql.contract.negotiation)
@@ -122,10 +125,18 @@ dependencies {
 
     implementation(libs.edc.data.plane.aws.s3)
 
-    //Vulnerabilities
+    // Observability
+    implementation(libs.edc.api.observability)
+
+    // Vulnerabilities
     implementation(libs.google.protobuf)
     implementation(libs.jetty.http)
     implementation(libs.jetty.server)
+    implementation(libs.jetty.websocket.server) {
+        exclude("org.eclipse.jetty", "jetty-annotations")
+    }
+    implementation(libs.jetty.annotations)
+
     constraints {
         implementation(libs.google.protobuf) {
             because("Detected vulnerability on 3.25.3 -- transitive dependency")
@@ -136,6 +147,12 @@ dependencies {
         implementation(libs.jetty.server) {
             because("Detected vulnerability on 11.0.23 -- transitive dependency")
         }
+        implementation(libs.jetty.websocket.server) {
+            because("Detected vulnerability on 11.0.24 -- transitive dependency")
+        }
+        implementation(libs.jetty.annotations) {
+            because("Detected vulnerability on 11.0.23 -- transitive dependency")
+        }
     }
     // Forzar la versión globalmente
     configurations.all {
@@ -143,6 +160,8 @@ dependencies {
             force(libs.google.protobuf)
             force(libs.jetty.http)
             force(libs.jetty.server)
+            force(libs.jetty.websocket.server)
+            force(libs.jetty.annotations)
         }
     }
 }
