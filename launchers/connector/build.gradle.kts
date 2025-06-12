@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    // Core extensions
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
@@ -39,16 +40,19 @@ dependencies {
         exclude("com.google.protobuf", "protobuf-java")
     }
     implementation(libs.edc.data.plane.iam)
-    //NUESTRO
+    
     // Audit
     implementation(project(":extensions:audit-configuration"))
+
     // IAM Identity and authorization
     implementation(libs.edc.iam.oauth2.service)
     implementation(project(":extensions:auth-oauth2-jwt"))
     implementation(libs.edc.core.token)
     implementation(libs.edc.spi.jwt)
-    // Secretos
+
+    // Secrets
     implementation(libs.edc.vault.hashicorp)
+
     // Federated Catalog
     implementation(libs.edc.federated.catalog.spi)
     implementation(libs.edc.federated.catalog.core)
@@ -60,11 +64,10 @@ dependencies {
     implementation(project(":extensions:count-elements-sql"))
     implementation(project(":extensions:count-elements-api"))
 
-    //participants
+    // Participants
     implementation(project(":extensions:participants-from-registration-service"))
 
-
-    //Vocabulary
+    // Vocabulary
     implementation(project(":extensions:vocabulary-index-sql"))
     implementation(project(":extensions:vocabulary-api"))
     implementation(project(":extensions:vocabulary-shared-api"))
@@ -81,13 +84,10 @@ dependencies {
     // Shared API
     implementation(project(":extensions:shared-api-configuration"))
 
-    //Transfer
+    // Transfer
     implementation(project(":extensions:inesdata-transfer-process-api"))
 
-    //Data plane public api
-    //implementation(project(":extensions:extended-data-plane-public-api"))
-
-    //COUNT EDC LIBR
+    // Persistence base
     implementation(libs.edc.spi.core)
     implementation(libs.edc.spi.transform)
     implementation(libs.edc.web.spi)
@@ -104,7 +104,7 @@ dependencies {
     implementation(libs.edc.transaction.datasource.spi)
     implementation(libs.edc.sql.core)
 
-    //COUNT AÑADIENDO TRACTUS
+    // Persistence
     implementation(libs.edc.sql.contract.definition)
     implementation(libs.edc.sql.assetindex)
     implementation(libs.edc.sql.contract.negotiation)
@@ -125,7 +125,10 @@ dependencies {
 
     implementation(libs.edc.data.plane.aws.s3)
 
-    //Vulnerabilities
+    // Observability
+    implementation(libs.edc.api.observability)
+
+    // Vulnerabilities
     implementation(libs.google.protobuf)
     implementation(libs.jetty.http)
     implementation(libs.jetty.server)
